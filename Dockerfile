@@ -4,21 +4,17 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first for better caching
-COPY pyproject.toml uv.lock ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install uv for faster dependency management
-RUN pip install uv
-
-# Install dependencies
-RUN uv sync --frozen
+# Install streamlit directly
+RUN pip install --no-cache-dir streamlit
 
 # Copy application files
-COPY . .
-
-# Create .streamlit directory and copy config
-RUN mkdir -p .streamlit
-COPY .streamlit/config.toml .streamlit/
+COPY app.py .
+COPY .streamlit/ .streamlit/
 
 # Expose port 8080
 EXPOSE 8080
@@ -28,4 +24,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:8080/_stcore/health || exit 1
 
 # Run the application
-CMD ["streamlit", "run", "app.py", "--server.port", "8080"]
+CMD ["streamlit", "run", "app.py", "--server.port", "8080", "--server.address", "0.0.0.0"]
