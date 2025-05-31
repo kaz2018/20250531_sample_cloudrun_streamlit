@@ -20,12 +20,12 @@ COPY . .
 RUN mkdir -p .streamlit
 COPY .streamlit/config.toml .streamlit/
 
-# Expose port 5000
-EXPOSE 5000
+# Expose port 8080
+EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5000/_stcore/health || exit 1
+  CMD curl -f http://localhost:8080/_stcore/health || exit 1
 
 # Run the application
-CMD ["streamlit", "run", "app.py", "--server.port", "5000"]
+CMD ["streamlit", "run", "app.py", "--server.port", "8080"]

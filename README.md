@@ -24,10 +24,10 @@ A simple Streamlit web application that displays a friendly greeting message.
 
 2. Run the application:
    ```bash
-   streamlit run app.py --server.port 5000
+   streamlit run app.py --server.port 8080
    ```
 
-3. Open your browser and navigate to `http://localhost:5000`
+3. Open your browser and navigate to `http://localhost:8080`
 
 ## Project Structure
 
